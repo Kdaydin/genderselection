@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "979385170479",
+    "firebase_url": "https://genderpopulation.firebaseio.com",
+    "project_id": "genderpopulation",
+    "storage_bucket": "genderpopulation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979385170479:android:3393e679cbde08dfeca4da",
+        "android_client_info": {
+          "package_name": "com.khomeapps.gender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979385170479-bsqupt7bp2ef6oef2175rq6fr8k581eq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.khomeapps.gender",
+            "certificate_hash": "ae550871f63f8d7d5a0eb0e1c28be712bb2f2a13"
+          }
+        },
+        {
+          "client_id": "979385170479-p60n6510662rg99gji9u0df92okci14i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcsZu0vNFLwK3N3V36KRv3ItWH50G-BtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979385170479-p60n6510662rg99gji9u0df92okci14i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

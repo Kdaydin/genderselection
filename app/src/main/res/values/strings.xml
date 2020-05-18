@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Gender Select</string>
+    <string name="boarding_start_header">Genders of the world</string>
+    <string name="boarding_start_button">Lets Begin</string>
+    <string name="boarding_select_button">Continue</string>
+    <string name="boarding_calculate_button">Let Me Vote!</string>
+    <string name="main_vote">VOTE !</string>
+</resources>

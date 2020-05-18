@@ -1,0 +1,90 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Base.Theme.Material">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorAccent">@color/secondaryColor</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
+        <item name="borderlessButtonStyle">@style/Widget.App.Button.TextButton</item>
+    </style>
+
+    <style name="Base.Theme.Material" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor" tools:ignore="NewApi">@color/primaryDarkColor</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">@color/primaryLightColor
+        </item>
+        <item name="android:windowBackground" tools:ignore="NewApi">#D99FDC</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">
+            ?attr/colorControlHighlight
+        </item>
+    </style>
+
+    <style name="Widget.App.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="android:height">60dp</item>
+    </style>
+
+    <style name="Widget.App.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="android:height">60dp</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="android:height">60dp</item>
+    </style>
+
+    <style name="TextAppearance.App.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/tiempos_headline_bold</item>
+        <item name="android:fontFamily">@font/tiempos_headline_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">30dp</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash_screen</item>
+    </style>
+
+    <style name="THSemiboldItalic">
+        <item name="fontFamily">@font/tiempos_headline_semibold_italic</item>
+    </style>
+
+    <style name="THSemiboldItalic.Black">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
+    <style name="THSemiboldItalic.Black.18">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="THSemiboldItalic.Black.24">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="THSemibold">
+        <item name="fontFamily">@font/tiempos_headline_semibold</item>
+    </style>
+
+    <style name="THSemibold.Black">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
+    <style name="THSemibold.Black.24">
+        <item name="android:textSize">24sp</item>
+    </style>
+</resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.khomeapps.gender.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <ScrollView
+            android:id="@+id/svGenders"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:padding="42dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnVote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                app:chipSpacing="16dp"
+                app:selectionRequired="true"
+                app:singleSelection="true">
+
+            </com.google.android.material.chip.ChipGroup>
+
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnVote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_side_margin_16"
+            android:layout_marginEnd="@dimen/button_side_margin_16"
+            android:layout_marginBottom="40dp"
+            android:enabled="@{viewModel.selectedGender.length()>0}"
+            android:text="@string/main_vote"
+            android:onClick="@{() -> viewModel.registerVote()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/svGenders" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

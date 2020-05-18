@@ -1,0 +1,131 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "com.khomeapps.gender"
+        minSdkVersion 23
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    def envStorePass = System.getenv("STORE_PASS")
+    def envKeyAlias = System.getenv("KEY_ALIAS")
+    def envKeyPass = System.getenv("KEY_PASS")
+    def keystoreProperties = new Properties()
+    if (rootProject.file('local.properties').exists()) {
+        rootProject.file('local.properties').withInputStream {
+            stream -> keystoreProperties.load(stream)
+        }
+    }
+
+    def getStorePass = { ->
+        def storePass = keystoreProperties.containsKey("storepass") ? keystoreProperties.getProperty("storepass") : envStorePass
+        return storePass
+    }
+
+    def getKeyAlias = { ->
+        def keyAlias = keystoreProperties.containsKey("keyalias") ? keystoreProperties.getProperty("keyalias") : envKeyAlias
+        return keyAlias
+    }
+
+    def getKeyPass = { ->
+        def keyPass = keystoreProperties.containsKey("keypass") ? keystoreProperties.getProperty("keypass") : envKeyPass
+        return keyPass
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("GenderKeyStore.jks")
+            storePassword getStorePass()
+            keyAlias getKeyAlias()
+            keyPassword getKeyPass()
+        }
+        internal {
+            storeFile file("GenderKeyStore.jks")
+            storePassword getStorePass()
+            keyAlias getKeyAlias()
+            keyPassword getKeyPass()
+        }
+    }
+
+    buildTypes {
+        release {
+            lintOptions {
+                disable 'MissingTranslation'
+                checkReleaseBuilds false
+                abortOnError false
+            }
+            manifestPlaceholders = [buildTypePrefix: ""]
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            manifestPlaceholders = [buildTypePrefix: "UAT_"]
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        internal {
+            initWith debug
+            minifyEnabled true
+            signingConfig signingConfigs.internal
+        }
+    }
+    flavorDimensions "type"
+    productFlavors {
+        Development {
+            dimension "type"
+            buildConfigField 'boolean', 'DEVELOPMENT', 'true'
+        }
+
+        Store {
+            dimension "type"
+            buildConfigField 'boolean', 'DEVELOPMENT', 'false'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    dataBinding {
+        enabled true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.ext.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.ext.lifecycleVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appCompatVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ext.coreKtxVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
+    implementation "com.google.android.material:$rootProject.ext.materialVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
+    implementation "com.microsoft.appcenter:appcenter-analytics:$rootProject.ext.appCenterSdkVersion"
+    implementation "com.microsoft.appcenter:appcenter-crashes:$rootProject.ext.appCenterSdkVersion"
+    implementation "com.airbnb.android:lottie:$rootProject.ext.lottieVersion"
+    implementation "org.koin:koin-android-viewmodel:$rootProject.ext.koinVersion"
+    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+}
