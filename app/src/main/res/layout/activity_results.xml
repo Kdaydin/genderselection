@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,7 +9,7 @@
             type="com.khomeapps.gender.ui.result.ResultsViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
@@ -42,14 +42,65 @@
         <LinearLayout
             android:id="@+id/shareContainer"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="90dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="40dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:id="@+id/shareTwitter"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_twitter_round_square_blue"
+                    android:contentDescription="@string/twittericon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/THSemiboldItalic.Black.18"
+                    android:text="@string/share_on_ntwitter"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/shareOther"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_share"
+                    android:tint="#1DA1F2"
+                    android:contentDescription="@string/shareicon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/THSemiboldItalic.Black.18"
+                    android:text="@string/share_on_nother"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 

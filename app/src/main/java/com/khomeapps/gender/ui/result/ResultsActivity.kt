@@ -1,11 +1,18 @@
 package com.khomeapps.gender.ui.result
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.os.StrictMode
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.Observable
+import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -14,8 +21,14 @@ import com.khomeapps.gender.R
 import com.khomeapps.gender.databinding.ActivityResultsBinding
 import com.khomeapps.gender.ui.base.BaseActivity
 import org.koin.android.ext.android.get
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>() {
+
+    private var chart: PieChart? = null
+
     override fun getLayoutRes(): Int = R.layout.activity_results
 
     override fun getViewModelType(): ResultsViewModel = get()
@@ -34,11 +47,28 @@ class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>()
 
         })
         viewModel?.getSelected()
+        binding?.shareTwitter?.setOnClickListener {
+            val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+            StrictMode.setVmPolicy(builder.build())
+            shareOnTwitter(
+                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there!",
+                getLocalBitmapUri(chart?.chartBitmap)
+            )
+        }
+
+        binding?.shareOther?.setOnClickListener {
+            val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
+            StrictMode.setVmPolicy(builder.build())
+            shareOnOther(
+                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there!",
+                getLocalBitmapUri(chart?.chartBitmap)
+            )
+        }
 
     }
 
     private fun showGraph() {
-        val chart = binding?.pieChart
+        chart = binding?.pieChart
         val selected = PieEntry(viewModel?.selectedCount?.toFloat()!!, viewModel?.selectedGender)
         val others =
             PieEntry((viewModel?.totalCount!! - viewModel?.selectedCount!!).toFloat(), "Others")
@@ -66,6 +96,68 @@ class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>()
         chart?.description = null
         chart?.invalidate()
         chart?.visibility = View.VISIBLE
-        binding?.resultText?.text = "*Shown For ${viewModel?.totalCount} Total Votes"
+
+        binding?.resultText?.text =
+            "*${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} out of ${viewModel?.totalCount} people are with you!"
+    }
+
+    private fun shareOnTwitter(textBody: String?, fileUri: Uri?) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.setPackage("com.twitter.android")
+        shareIntent.putExtra(Intent.EXTRA_TEXT, textBody ?: "")
+
+        if (fileUri != null) {
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            shareIntent.type = "image/*";
+        }
+
+        try {
+            startActivity(shareIntent);
+        } catch (ex: Exception) {
+            Log.d("Exception:", ex.message ?: "")
+        }
+    }
+
+    private fun shareOnOther(textBody: String?, fileUri: Uri?) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, textBody ?: "")
+
+        if (fileUri != null) {
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            shareIntent.type = "image/*";
+        }
+
+        try {
+            startActivity(shareIntent);
+        } catch (ex: Exception) {
+            Log.d("Exception:", ex.message ?: "")
+        }
+    }
+
+
+    private fun getLocalBitmapUri(bmp: Bitmap?): Uri? {
+        // Store image to default external storage directory
+        var bmpUri: Uri? = null
+        try {
+            // Use methods on Context to access package-specific directories on external storage.
+            // This way, you don't need to request external read/write permission.
+            // See https://youtu.be/5xVh-7ywKpE?t=25m25s
+            val file = File(
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "share_image_" + System.currentTimeMillis() + ".png"
+            )
+            val out = FileOutputStream(file)
+            bmp?.compress(Bitmap.CompressFormat.PNG, 90, out)
+            out.close()
+            // **Warning:** This will fail for API >= 24, use a FileProvider as shown below instead.
+            bmpUri = Uri.fromFile(file)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bmpUri
     }
 }

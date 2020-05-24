@@ -5,4 +5,8 @@
     <string name="boarding_select_button">Continue</string>
     <string name="boarding_calculate_button">Let Me Vote!</string>
     <string name="main_vote">VOTE !</string>
+    <string name="twittericon">TwitterIcon</string>
+    <string name="share_on_ntwitter">Share on\nTwitter</string>
+    <string name="shareicon">ShareIcon</string>
+    <string name="share_on_nother">Share on\nOther</string>
 </resources>

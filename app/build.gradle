@@ -85,11 +85,13 @@ android {
         Development {
             dimension "type"
             buildConfigField 'boolean', 'DEVELOPMENT', 'true'
+            buildConfigField "String", 'AD_ID', "\"ca-app-pub-3940256099942544/1033173712\""
         }
 
         Store {
             dimension "type"
             buildConfigField 'boolean', 'DEVELOPMENT', 'false'
+            buildConfigField "String", 'AD_ID', "\"ca-app-pub-8296491057212745/9516989377\""
         }
     }
     compileOptions {
@@ -116,6 +118,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$rootProject.ext.coreKtxVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintLayoutVersion"
     implementation "com.google.android.material:$rootProject.ext.materialVersion"
+    implementation 'com.google.firebase:firebase-ads:19.1.0'
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.2.0"
