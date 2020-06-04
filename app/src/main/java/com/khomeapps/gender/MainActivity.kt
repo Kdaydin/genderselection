@@ -19,13 +19,18 @@ import kotlin.math.abs
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
 
     private lateinit var mInterstitialAd: InterstitialAd
+    val s = "AD_LOG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this) {}
+        MobileAds.initialize(this) {
+        }
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = BuildConfig.AD_ID
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        val adRequest =
+            AdRequest.Builder().build()
+        mInterstitialAd.loadAd(adRequest)
+        binding?.adView?.loadAd(adRequest)
 
 
         binding?.chipGroup?.setOnCheckedChangeListener { _, checkedId ->
@@ -43,26 +48,32 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
         })
         mInterstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {
+                Log.d(s,"onAdLoaded")
                 // Code to be executed when an ad finishes loading.
             }
 
             override fun onAdFailedToLoad(errorCode: Int) {
+                Log.d(s,"onAdFailedToLoad with $errorCode")
                 // Code to be executed when an ad request fails.
             }
 
             override fun onAdOpened() {
+                Log.d(s,"onAdOpened")
                 // Code to be executed when the ad is displayed.
             }
 
             override fun onAdClicked() {
+                Log.d(s,"onAdClicked")
                 // Code to be executed when the user clicks on an ad.
             }
 
             override fun onAdLeftApplication() {
+                Log.d(s,"onAdLeftApplication")
                 // Code to be executed when the user has left the app.
             }
 
             override fun onAdClosed() {
+                Log.d(s,"onAdClosed")
                 // Code to be executed when the interstitial ad is closed.
                 startActivity(
                     Intent(
@@ -88,6 +99,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
                                     mInterstitialAd.show()
                                 } else {
                                     Log.d("TAG", "The interstitial wasn't loaded yet.")
+                                    startActivity(
+                                        Intent(
+                                            this@MainActivity,
+                                            ResultsActivity::class.java
+                                        ).putExtra("Selection", viewModel?.selectedGender?.value!!)
+                                    )
+                                    finish()
                                 }
                             }
                         builder.show()

@@ -51,7 +51,7 @@ class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>()
             val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
             StrictMode.setVmPolicy(builder.build())
             shareOnTwitter(
-                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there!",
+                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there!\n#GenderSelection https://khomeapps.page.link/genderselect",
                 getLocalBitmapUri(chart?.chartBitmap)
             )
         }
@@ -60,7 +60,7 @@ class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>()
             val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
             StrictMode.setVmPolicy(builder.build())
             shareOnOther(
-                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there!",
+                "I'm a ${viewModel?.selectedGender} with ${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} others like me. Vote now and share how many of us out there! https://khomeapps.page.link/genderselect",
                 getLocalBitmapUri(chart?.chartBitmap)
             )
         }
