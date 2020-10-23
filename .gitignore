@@ -13,6 +13,9 @@
 /captures
 .externalNativeBuild
 .cxx
+app/mapping.txt
+app/seeds.txt
+
 
 # Built application files
 *.apk
