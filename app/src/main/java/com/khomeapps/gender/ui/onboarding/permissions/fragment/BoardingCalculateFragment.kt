@@ -1,14 +1,26 @@
 package com.khomeapps.gender.ui.onboarding.permissions.fragment
 
-import com.khomeapps.gender.R
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.khomeapps.gender.databinding.FragmentBoardingCalculateBinding
 import com.khomeapps.gender.ui.base.BaseFragment
-import org.koin.android.ext.android.get
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BoardingCalculateFragment :
-    BaseFragment<BoardingCalculateViewModel, FragmentBoardingCalculateBinding>() {
-    override fun getLayoutRes(): Int = R.layout.fragment_boarding_calculate
+    BaseFragment() {
+    private var binding: FragmentBoardingCalculateBinding? = null
+    val viewModel: BoardingCalculateViewModel by viewModels()
 
-    override fun getViewModelType(): BoardingCalculateViewModel = get()
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentBoardingCalculateBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
 }

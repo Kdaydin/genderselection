@@ -1,0 +1,41 @@
+[versions]
+appCompatVersion = "1.7.0"
+coreKtxVersion = "1.13.1"
+constraintLayoutVersion = "2.1.4"
+fragmentKtxVersion = "1.8.2"
+lifecycleVersion = "2.8.4"
+appCenterSdkVersion = "2.5.1"
+materialVersion = "1.12.0"
+junitVersion = "4.12"
+lottieVersion = "6.4.0"
+koinVersion = "2.0.0-rc-2"
+glideVersion = "4.16.0"
+firebaseAdsVersion = "23.3.0"
+firebaseAnalyticsVersion = "22.0.2"
+firebaseFirestoreKtxVersion = "25.0.0"
+mPAndroidChartVersion = "v3.1.0"
+hilt = "2.47"
+
+[libraries]
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleVersion" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleVersion" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleVersion" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompatVersion" }
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayoutVersion" }
+material = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+firebase-ads = { module = 'com.google.firebase:firebase-ads', version.ref = "firebaseAdsVersion" }
+appcenter-analytics = { module = "com.microsoft.appcenter:appcenter-analytics", version.ref = "appCenterSdkVersion" }
+appcenter-crashes = { module = "com.microsoft.appcenter:appcenter-crashes", version.ref = "appCenterSdkVersion" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottieVersion" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
+firebase-analytics = { module = 'com.google.firebase:firebase-analytics', version.ref = "firebaseAnalyticsVersion" }
+androidChart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mPAndroidChartVersion" }
+firebase-firestore-ktx = { module = 'com.google.firebase:firebase-firestore-ktx', version.ref = "firebaseFirestoreKtxVersion" }
+hilt-android = { module = 'com.google.dagger:hilt-android', version.ref = "hilt" }
+hilt-compiler = { module = 'com.google.dagger:hilt-compiler', version.ref = "hilt" }
+
+[plugins]
+hilt-gradle = { id = 'com.google.dagger.hilt.android', version.ref = "hilt" }

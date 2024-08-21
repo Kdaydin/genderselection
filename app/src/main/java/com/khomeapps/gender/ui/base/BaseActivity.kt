@@ -1,71 +1,19 @@
 package com.khomeapps.gender.ui.base
 
 import android.content.pm.PackageManager
-import android.os.Bundle
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.khomeapps.gender.BR
-import com.khomeapps.gender.R
-import com.khomeapps.gender.application.AppConstans
+import com.khomeapps.gender.application.AppConstants
 import com.khomeapps.gender.utils.SavedDataManager
-import org.koin.android.ext.android.get
-import java.lang.ref.WeakReference
+import javax.inject.Inject
 
-abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppCompatActivity() {
-    @LayoutRes
-    abstract fun getLayoutRes(): Int
+open class BaseActivity : AppCompatActivity() {
 
-    abstract fun getViewModelType(): VM
 
-    protected var viewModel: VM? = null
-    protected var binding: DB? = null
-    var fragmentProcessor = FragmentProcessor(
-        WeakReference(supportFragmentManager),
-        R.id.mainContainer,
-        WeakReference(this)
-    )
-    var dataManager: SavedDataManager = get()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, getLayoutRes())
-        viewModel = getViewModelType()
-        binding?.setVariable(BR.viewModel, viewModel)
-        binding?.lifecycleOwner = this
-        viewModel?.onCreate()
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel?.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel?.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel?.onStop()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel?.onStart()
-    }
-
-    override fun onDestroy() {
-        binding?.unbind()
-        binding?.lifecycleOwner = null
-        binding = null
-        super.onDestroy()
-    }
+    @Inject
+    lateinit var savedDataManager: SavedDataManager
 
     fun checkAndRequestPermission(permission: String, requestCode: Int): Boolean {
         if (ContextCompat.checkSelfPermission(
@@ -109,9 +57,9 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppCompa
 
     private fun getPermissionRequestHeader(requestCode: Int): String {
         return when (requestCode) {
-            AppConstans.Permissions.LOCATION -> ""
-            AppConstans.Permissions.NOTIFICATION -> ""
-            AppConstans.Permissions.WRITE_EXTERNAL -> "GenderSelection App Needs Permission"
+            AppConstants.Permissions.LOCATION -> ""
+            AppConstants.Permissions.NOTIFICATION -> ""
+            AppConstants.Permissions.WRITE_EXTERNAL -> "GenderSelection App Needs Permission"
             else -> ""
         }
 
@@ -119,9 +67,9 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> : AppCompa
 
     private fun getPermissionRequestMessage(requestCode: Int): String {
         return when (requestCode) {
-            AppConstans.Permissions.LOCATION -> ""
-            AppConstans.Permissions.NOTIFICATION -> ""
-            AppConstans.Permissions.WRITE_EXTERNAL -> "We need your permission to save chart image to your phone."
+            AppConstants.Permissions.LOCATION -> ""
+            AppConstants.Permissions.NOTIFICATION -> ""
+            AppConstants.Permissions.WRITE_EXTERNAL -> "We need your permission to save chart image to your phone."
             else -> ""
         }
     }

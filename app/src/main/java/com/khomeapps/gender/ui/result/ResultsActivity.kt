@@ -10,8 +10,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.Observable
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -20,32 +20,31 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.khomeapps.gender.R
 import com.khomeapps.gender.databinding.ActivityResultsBinding
 import com.khomeapps.gender.ui.base.BaseActivity
-import org.koin.android.ext.android.get
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>() {
+@AndroidEntryPoint
+class ResultsActivity : BaseActivity() {
 
     private var chart: PieChart? = null
 
-    override fun getLayoutRes(): Int = R.layout.activity_results
+    private var binding: ActivityResultsBinding? = null
 
-    override fun getViewModelType(): ResultsViewModel = get()
+    val viewModel: ResultsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityResultsBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
         intent.getStringExtra("Selection").let {
             viewModel?.selectedGender = it!!
         }
-        viewModel?.isShowGraph?.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (viewModel?.isShowGraph?.get() == true)
-                    showGraph()
-            }
-
-        })
+        viewModel?.isShowGraph?.observe(this) {
+            if (viewModel?.isShowGraph?.value == true)
+                showGraph()
+        }
         viewModel?.getSelected()
         binding?.shareTwitter?.setOnClickListener {
             val builder: StrictMode.VmPolicy.Builder = StrictMode.VmPolicy.Builder()
@@ -98,7 +97,7 @@ class ResultsActivity : BaseActivity<ResultsViewModel, ActivityResultsBinding>()
         chart?.visibility = View.VISIBLE
 
         binding?.resultText?.text =
-            "*${(viewModel?.totalCount!! - viewModel?.selectedCount!!)} out of ${viewModel?.totalCount} people are with you!"
+            "*${(viewModel?.selectedCount!!)} out of ${viewModel?.totalCount} people are with you!"
     }
 
     private fun shareOnTwitter(textBody: String?, fileUri: Uri?) {

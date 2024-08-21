@@ -3,20 +3,30 @@ package com.khomeapps.gender.utils.diskManager
 import android.content.Context
 import android.util.Log
 import com.khomeapps.gender.data.entities.base.Empty
-import java.io.*
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.io.Serializable
 import java.lang.reflect.Field
-import java.util.*
+import java.util.Collections
 
 internal abstract class PersistentClass : Serializable {
     @Transient
     private lateinit var context: Context
     private lateinit var filename: String
+
     @Transient
     private var fileInputStream: FileInputStream? = null
+
     @Transient
     private var objectInputStream: ObjectInputStream? = null
+
     @Transient
     private var fileOutputStream: FileOutputStream? = null
+
     @Transient
     private var objectOutputStream: ObjectOutputStream? = null
 

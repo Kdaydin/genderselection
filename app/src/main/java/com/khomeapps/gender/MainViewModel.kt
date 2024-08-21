@@ -1,24 +1,26 @@
 package com.khomeapps.gender
 
 import android.util.Log
-import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.khomeapps.gender.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel : BaseViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor() : BaseViewModel() {
     var selectedGender = MutableLiveData("")
     val options = mutableListOf<String>()
-    var optionsLoaded = ObservableField<Boolean>(false)
-    var voteRegistered = ObservableField<Boolean>(false)
+    private var _optionsLoaded = MutableLiveData(false)
+    val optionsLoaded: LiveData<Boolean> = _optionsLoaded
+    private var _voteRegistered = MutableLiveData(false)
+    val voteRegistered: LiveData<Boolean> = _voteRegistered
     fun registerVote() {
         val vote = FieldValue.increment(1)
         db.collection("GenderOptions").document(selectedGender.value!!).update("count", vote)
             .addOnSuccessListener {
-                voteRegistered.set(true)
+                _voteRegistered.postValue(true)
                 db.collection("TotalVoteCount").document("Votes").update("count", vote)
             }
     }
@@ -30,7 +32,7 @@ class MainViewModel : BaseViewModel() {
                 for (doc in result) {
                     options.add(doc.id)
                 }
-                optionsLoaded.set(true)
+                _optionsLoaded.postValue(true)
             }.addOnFailureListener { exception ->
                 Log.w("TAG", "Error getting documents.", exception)
             }

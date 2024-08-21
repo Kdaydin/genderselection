@@ -18121,7 +18121,7 @@ com.google.android.gms.internal.ads.zzebr:
     public final void zzak(java.lang.Object)
     public final void zza(com.google.android.gms.internal.ads.zzebi,java.lang.Object,com.google.android.gms.internal.ads.zzebq,com.google.android.gms.internal.ads.zzebt)
     public final void zza(com.google.android.gms.internal.ads.zzeaq,java.lang.Object,com.google.android.gms.internal.ads.zzebq,com.google.android.gms.internal.ads.zzebt)
-com.khomeapps.gender.application.AppConstans$Permissions:
+com.khomeapps.gender.application.AppConstants$Permissions:
     public static final int LOCATION
     public static final int NOTIFICATION
     public static final int WRITE_EXTERNAL

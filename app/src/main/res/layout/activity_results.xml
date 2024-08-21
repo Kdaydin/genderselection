@@ -1,108 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
-    <data>
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/resultText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <variable
-            name="viewModel"
-            type="com.khomeapps.gender.ui.result.ResultsViewModel" />
-    </data>
+    <TextView
+        android:id="@+id/resultText"
+        style="@style/THSemibold.Black.24"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="36dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/shareContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="You are in %XX percent of XXXXXX people who voted" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true">
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pieChart"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="24dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/resultText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/resultText"
-            style="@style/THSemibold.Black.24"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="36dp"
-            android:gravity="center"
-            app:layout_constraintBottom_toTopOf="@+id/shareContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="You are in %XX percent of XXXXXX people who voted" />
+    <LinearLayout
+        android:id="@+id/shareContainer"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/shareContainer"
-            android:layout_width="0dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="40dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:baselineAligned="false">
+            android:id="@+id/shareTwitter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/shareTwitter"
-                android:orientation="vertical"
-                android:layout_weight="1"
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/twittericon"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_twitter_round_square_blue" />
+
+            <TextView
+                style="@style/THSemiboldItalic.Black.18"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_twitter_round_square_blue"
-                    android:contentDescription="@string/twittericon" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/THSemiboldItalic.Black.18"
-                    android:text="@string/share_on_ntwitter"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/shareOther"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:scaleType="fitXY"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_share"
-                    android:tint="#1DA1F2"
-                    android:contentDescription="@string/shareicon" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/THSemiboldItalic.Black.18"
-                    android:text="@string/share_on_nother"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/share_on_ntwitter" />
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+        <LinearLayout
+            android:id="@+id/shareOther"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/shareicon"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_share"
+                app:tint="#1DA1F2" />
+
+            <TextView
+                style="@style/THSemiboldItalic.Black.18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/share_on_nother" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,37 +23,37 @@ class FragmentProcessor(
 
     fun getBackStackEntryCount() = fragmentManager.get()!!.backStackEntryCount
 
-    fun getCurrentFragment(): BaseFragment<*, *>? {
+    fun getCurrentFragment(): BaseFragment? {
         val currentFragment = fragmentManager.get()!!.findFragmentById(containerId)
         return if (currentFragment != null) {
-            (currentFragment as BaseFragment<*, *>)
+            (currentFragment as BaseFragment)
         } else {
             null
         }
     }
 
-    fun add(fragment: BaseFragment<*, *>) {
+    fun add(fragment: BaseFragment) {
         add(fragment, null)
     }
 
-    fun add(fragment: BaseFragment<*, *>, clazz: Class<out BaseFragment<*, *>>) {
+    fun add(fragment: BaseFragment, clazz: Class<out BaseFragment>) {
         add(fragment, clazz.simpleName)
     }
 
-    fun add(fragment: BaseFragment<*, *>, tag: String?) {
+    fun add(fragment: BaseFragment, tag: String?) {
         val fragmentTransaction = fragmentManager.get()!!.beginTransaction()
         fragmentTransaction.addToBackStack(tag)
         fragmentTransaction.replace(containerId, fragment, tag)
         fragmentTransaction.commitAllowingStateLoss()
     }
 
-    fun replaceFragment(fragment: BaseFragment<*, *>) {
+    fun replaceFragment(fragment: BaseFragment) {
         val fragmentTransaction = fragmentManager.get()!!.beginTransaction()
         fragmentTransaction.replace(containerId, fragment)
         fragmentTransaction.commitAllowingStateLoss()
     }
 
-    fun remove(fragment: BaseFragment<*, *>) {
+    fun remove(fragment: BaseFragment) {
         val fragmentTransaction = fragmentManager.get()!!.beginTransaction()
         fragmentTransaction.remove(fragment)
         fragmentTransaction.commitAllowingStateLoss()
@@ -68,7 +68,7 @@ class FragmentProcessor(
         fragmentManager.get()!!.popBackStack()
     }
 
-    fun backTo(clazz: Class<out BaseFragment<*, *>>) {
+    fun backTo(clazz: Class<out BaseFragment>) {
         fragmentManager.get()!!.popBackStack(clazz.simpleName, 0)
     }
 }

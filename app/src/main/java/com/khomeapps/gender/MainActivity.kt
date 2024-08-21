@@ -4,132 +4,136 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.databinding.Observable
-import com.google.android.gms.ads.AdListener
+import androidx.activity.viewModels
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.khomeapps.gender.databinding.ActivityMainBinding
 import com.khomeapps.gender.ui.base.BaseActivity
 import com.khomeapps.gender.ui.result.ResultsActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>() {
+@AndroidEntryPoint
+class MainActivity : BaseActivity() {
 
-    private lateinit var mInterstitialAd: InterstitialAd
+    private var binding: ActivityMainBinding? = null
+    val viewModel: MainViewModel by viewModels()
+    private var mInterstitialAd: InterstitialAd? = null
     val s = "AD_LOG"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this) {
         }
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = BuildConfig.AD_ID
-        val adRequest =
-            AdRequest.Builder().build()
-        mInterstitialAd.loadAd(adRequest)
-        binding?.adView?.loadAd(adRequest)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        InterstitialAd.load(
+            this,
+            BuildConfig.AD_ID,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    super.onAdFailedToLoad(p0)
+                }
 
-
-        binding?.chipGroup?.setOnCheckedChangeListener { _, checkedId ->
-            viewModel?.selectedGender?.value = viewModel?.options?.get(
-                abs(checkedId) - 1
-            )
-        }
-        viewModel?.optionsLoaded?.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (viewModel?.optionsLoaded?.get() == true)
-                    setOptions()
-            }
-
-        })
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                Log.d(s,"onAdLoaded")
-                // Code to be executed when an ad finishes loading.
-            }
-
-            override fun onAdFailedToLoad(errorCode: Int) {
-                Log.d(s,"onAdFailedToLoad with $errorCode")
-                // Code to be executed when an ad request fails.
-            }
-
-            override fun onAdOpened() {
-                Log.d(s,"onAdOpened")
-                // Code to be executed when the ad is displayed.
-            }
-
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    super.onAdLoaded(ad)
+                    mInterstitialAd = ad
+                }
+            })
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdClicked() {
-                Log.d(s,"onAdClicked")
-                // Code to be executed when the user clicks on an ad.
+                super.onAdClicked()
             }
 
-            override fun onAdLeftApplication() {
-                Log.d(s,"onAdLeftApplication")
-                // Code to be executed when the user has left the app.
-            }
-
-            override fun onAdClosed() {
-                Log.d(s,"onAdClosed")
-                // Code to be executed when the interstitial ad is closed.
+            override fun onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent()
                 startActivity(
                     Intent(
                         this@MainActivity,
                         ResultsActivity::class.java
-                    ).putExtra("Selection", viewModel?.selectedGender?.value!!)
+                    ).putExtra("Selection", viewModel.selectedGender.value!!)
                 )
                 finish()
             }
+
+            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                super.onAdFailedToShowFullScreenContent(p0)
+            }
+
+            override fun onAdImpression() {
+                super.onAdImpression()
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                super.onAdShowedFullScreenContent()
+            }
+        }
+
+        mInterstitialAd?.setOnPaidEventListener {
+            Log.d("TAG", "onCreate: ")
+        }
+        binding?.adView?.loadAd(AdRequest.Builder().build())
+
+        binding?.btnVote?.setOnClickListener {
+            viewModel.registerVote()
+        }
+        viewModel.selectedGender.observe(this) {
+            binding?.btnVote?.isEnabled = it.isNotEmpty()
+        }
+        binding?.chipGroup?.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.selectedGender.value = viewModel.options.get(
+                abs(checkedId) - 1
+            )
+        }
+        viewModel.optionsLoaded.observe(this) {
+            if (viewModel.optionsLoaded.value == true)
+                setOptions()
+
         }
 
 
-        viewModel?.voteRegistered?.addOnPropertyChangedCallback(object :
-            Observable.OnPropertyChangedCallback() {
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                if (viewModel?.voteRegistered?.get() == true)
-                    run {
-                        val builder = MaterialAlertDialogBuilder(this@MainActivity)
-                        builder.setMessage("Thanks For Voting!")
-                            .setPositiveButton("See Results") { _, _ ->
+        viewModel?.voteRegistered?.observe(this) {
+            if (viewModel?.voteRegistered?.value == true)
+                run {
+                    val builder = MaterialAlertDialogBuilder(this@MainActivity)
+                    builder.setMessage("Thanks For Voting!")
+                        .setPositiveButton("See Results") { _, _ ->
 
-                                if (mInterstitialAd.isLoaded) {
-                                    mInterstitialAd.show()
-                                } else {
-                                    Log.d("TAG", "The interstitial wasn't loaded yet.")
-                                    startActivity(
-                                        Intent(
-                                            this@MainActivity,
-                                            ResultsActivity::class.java
-                                        ).putExtra("Selection", viewModel?.selectedGender?.value!!)
-                                    )
-                                    finish()
-                                }
+                            mInterstitialAd?.show(this) ?: run {
+                                Log.d("TAG", "The interstitial wasn't loaded yet.")
+                                startActivity(
+                                    Intent(
+                                        this@MainActivity,
+                                        ResultsActivity::class.java
+                                    ).putExtra("Selection", viewModel.selectedGender?.value!!)
+                                )
+                                finish()
                             }
-                        builder.show()
-                    }
-            }
+                        }
+                    builder.show()
+                }
+        }
 
-        })
-
-        viewModel?.getOptions()
+        viewModel.getOptions()
 
     }
 
 
     private fun setOptions() {
-        viewModel?.options?.forEachIndexed { index, opt ->
+        viewModel.options?.forEachIndexed { index, opt ->
             val genderChip = LayoutInflater.from(this)
                 .inflate(R.layout.item_gender_chip, binding?.chipGroup, false) as Chip
             genderChip.text = opt
-            genderChip.id = index+1
+            genderChip.id = index + 1
             binding?.chipGroup?.addView(genderChip)
         }
     }
-
-    override fun getLayoutRes(): Int = R.layout.activity_main
-
-    override fun getViewModelType(): MainViewModel = MainViewModel()
 }

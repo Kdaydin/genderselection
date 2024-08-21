@@ -5,16 +5,18 @@ import com.khomeapps.gender.R
 import com.khomeapps.gender.databinding.ActivityOnboardingStartBinding
 import com.khomeapps.gender.ui.base.BaseActivity
 import com.khomeapps.gender.ui.onboarding.start.fragment.BoardingStartFragment
-import org.koin.android.ext.android.get
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnBoardingStartActivity :
-    BaseActivity<OnBoardingStartViewModel, ActivityOnboardingStartBinding>() {
-    override fun getLayoutRes(): Int = R.layout.activity_onboarding_start
-
-    override fun getViewModelType(): OnBoardingStartViewModel = get()
-
+    BaseActivity() {
+    private var binding: ActivityOnboardingStartBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentProcessor.add(BoardingStartFragment())
+        binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mainContainer, BoardingStartFragment())
+            .commit()
     }
 }

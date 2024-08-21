@@ -1,6 +1,6 @@
 package com.khomeapps.gender.application
 
-object AppConstans {
+object AppConstants {
     object Permissions {
         val LOCATION = 100
         val NOTIFICATION = 200

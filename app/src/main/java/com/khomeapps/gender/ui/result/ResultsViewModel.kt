@@ -1,14 +1,19 @@
 package com.khomeapps.gender.ui.result
 
 import android.util.Log
-import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.khomeapps.gender.ui.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ResultsViewModel : BaseViewModel() {
+@HiltViewModel
+class ResultsViewModel @Inject constructor() : BaseViewModel() {
     var selectedGender: String = ""
     var selectedCount: Long = 0
     var totalCount: Long = 0
-    var isShowGraph = ObservableField(false)
+    var _isShowGraph = MutableLiveData(false)
+    val isShowGraph: LiveData<Boolean> = _isShowGraph
     fun getSelected() {
         db.collection("GenderOptions").document(selectedGender)
             .get()
@@ -25,7 +30,7 @@ class ResultsViewModel : BaseViewModel() {
             .get()
             .addOnSuccessListener { result ->
                 totalCount = result["count"] as Long
-                isShowGraph.set(true)
+                _isShowGraph.postValue(true)
             }.addOnFailureListener { exception ->
                 Log.w("TAG", "Error getting documents.", exception)
             }
