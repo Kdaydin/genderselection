@@ -107,3 +107,8 @@
   **[] $VALUES;
   public *;
 }
+
+-dontwarn com.squareup.okhttp.CipherSuite
+-dontwarn com.squareup.okhttp.ConnectionSpec
+-dontwarn com.squareup.okhttp.TlsVersion
+-dontwarn java.lang.reflect.AnnotatedType
